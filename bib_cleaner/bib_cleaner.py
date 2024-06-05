@@ -1,4 +1,7 @@
 """Main module."""
+"""
+06/04/2024: P. Marcum revised to accept natbib format (e.g., citep{}, citet{}, citep*{}, etc)
+"""
 import re
 
 
@@ -6,7 +9,7 @@ def tex_to_tags(tex_files):
     """Extract tags from TeX files.
 
     Given a list of TeX files, extract the citation tags which are contained in
-    ``\cite{}``. Split multiple citations (e.g. ``\cite{A, B}``) into
+    ``\cite[tp ]{}``. Split multiple citations (e.g. ``\cite{A, B}``) into
     individual tags (A, B).
 
     Parameters
@@ -36,7 +39,7 @@ def tex_to_tags(tex_files):
     for a_file in tex_files:
         with open(a_file, encoding="utf-8") as f:
             contents = f.read()
-        all_csv_tags += list(set(re.findall(r"\\cite{[A-Za-z0-9 ,\-_]+}", contents)))
+        all_csv_tags += list(set(re.findall(r"\\cite[tp\*]{0,2}(?!author)?(?!year)?{[A-Za-z0-9 ,\-_]+}", contents)))
     all_csv_tags = [a_name[6:-1] for a_name in all_csv_tags]
 
     all_tags = []
